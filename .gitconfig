@@ -1,0 +1,35 @@
+[include]
+  # path = ~/.gitconfig_local
+[core]
+  editor = vim
+  pager = less
+  autocrlf = input
+  # excludesfile = ~/.gitignore_global
+[color]
+  ui = auto
+  diff = auto
+  grep = auto
+  status = auto
+  branch = auto
+  interactive = auto
+[alias]
+  f = fetch -p
+  pull = fetch -p
+  logp = log -p
+  logs = log --stat
+  logg = log --graph --date=format:'%y-%m-%d(%a) %T' --pretty=format:'%h %C(green)%cd %C(blue)%ad %C(green)%cn %C(blue)%an %C(green)%ce %C(blue)%ae %C(reset)%s'
+  loga = log --graph --all --color --pretty='%x09%h %s %C(red)%d%C(reset)'
+  st = status
+  br = branch
+  ci = commit
+  cim = commit -m
+  ck = checkout
+  re = remote -v
+  diffc = diff --cached
+  resets = reset --soft
+  reseth = reset --hard
+[user]
+  # email =
+  # name =
+[diff]
+  algorithm = histogram
