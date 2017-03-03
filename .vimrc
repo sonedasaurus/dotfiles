@@ -61,6 +61,8 @@ NeoBundle 'mattn/emmet-vim'
 NeoBundle 'https://github.com/leafgarland/typescript-vim.git'
 NeoBundle 'isRuslan/vim-es6'
 NeoBundle 'fatih/vim-go'
+NeoBundle 'tyru/open-browser.vim'
+NeoBundle 'kannokanno/previm'
 
 call neobundle#end()
 
@@ -156,3 +158,14 @@ let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['ruby'] }
 
 " go
 let g:go_fmt_command = "goimports"
+
+" previm
+autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+
+" Previm
+let g:previm_open_cmd = ''
+let g:previm_show_header = 0
+nnoremap [previm] <Nop>
+nmap <Space>p [previm]
+nnoremap <silent> [previm]o :<C-u>PrevimOpen<CR>
+nnoremap <silent> [previm]r :call previm#refresh()<CR>
