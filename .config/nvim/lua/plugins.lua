@@ -23,7 +23,7 @@ vim.api.nvim_create_autocmd('PackChanged', {
 
 vim.pack.add({
   { src = 'https://github.com/folke/tokyonight.nvim' },
-  { src = 'https://github.com/neovim/nvim-lspconfig' },
+  { src = 'https://github.com/nvim-mini/mini.nvim', version = 'main' },
   { src = 'https://github.com/VonHeikemen/ts-enable.nvim' },
   {
     src = 'https://github.com/nvim-treesitter/nvim-treesitter',
@@ -34,7 +34,7 @@ vim.pack.add({
       end,
     },
   },
-  { src = 'https://github.com/nvim-mini/mini.nvim', version = 'main' },
+  { src = 'https://github.com/neovim/nvim-lspconfig' },
 })
 
 -- ========================================================================== --
@@ -149,3 +149,48 @@ vim.g.ts_enable = {
   auto_install = true,
   highlights = true,
 }
+
+-- ----------------------------------- --
+-- LSP
+-- ----------------------------------- --
+
+local mini_completion = require('mini.completion')
+mini_completion.setup({})
+
+local lsp_capabilities = vim.tbl_deep_extend(
+  'force',
+  vim.lsp.protocol.make_client_capabilities(),
+  mini_completion.get_lsp_capabilities()
+)
+
+for _, server in ipairs({
+  'sourcekit',
+  'kotlin_language_server',
+  'gopls',
+  'marksman',
+  'pyright',
+  'bashls',
+}) do
+  vim.lsp.config(server, {
+    capabilities = lsp_capabilities,
+  })
+  vim.lsp.enable(server)
+end
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  desc = 'LSP actions',
+  callback = function(event)
+    local opts = {buffer = event.buf}
+    vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
+    vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
+    vim.keymap.set('n', 'grd', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
+    vim.keymap.set({'n', 'x'}, 'gq', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
+
+    local id = vim.tbl_get(event, 'data', 'client_id')
+    local client = id and vim.lsp.get_client_by_id(id)
+
+    if client and client:supports_method('textDocument/completion') then
+      vim.bo[event.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+    end
+  end,
+})
