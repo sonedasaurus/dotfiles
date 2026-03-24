@@ -52,7 +52,11 @@ vim.cmd.colorscheme('tokyonight-night')
 -- ----------------------------------- --
 
 local mini_files = require('mini.files')
-mini_files.setup({})
+mini_files.setup({
+  mappings = {
+    go_in_plus = '',
+  },
+})
 
 vim.keymap.set('n', '<leader>e', function()
   if mini_files.close() then
@@ -83,10 +87,27 @@ local map_split = function(buf_id, lhs, direction)
   })
 end
 
+-- Only open files with Enter in the file explorer
+local map_go_in = function(buf_id, lhs, fs_type, desc)
+  vim.keymap.set('n', lhs, function()
+    local fs_entry = mini_files.get_fs_entry()
+    if fs_entry == nil or fs_entry.fs_type ~= fs_type then
+      return
+    end
+
+    mini_files.go_in()
+  end, {
+    buffer = buf_id,
+    desc = desc,
+  })
+end
+
 vim.api.nvim_create_autocmd('User', {
   pattern = 'MiniFilesBufferCreate',
   callback = function(args)
     local buf_id = args.data.buf_id
+    map_go_in(buf_id, 'l', 'directory', 'Open directory')
+    map_go_in(buf_id, '<CR>', 'file', 'Open file')
     map_split(buf_id, 'gs', 'belowright horizontal')
     map_split(buf_id, 'gv', 'belowright vertical')
   end,
