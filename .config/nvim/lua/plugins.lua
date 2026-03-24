@@ -41,11 +41,20 @@ vim.pack.add({
 -- ==                         PLUGIN CONFIGURATION                         == --
 -- ========================================================================== --
 
+-- Color scheme
 vim.cmd.colorscheme('tokyonight-night')
 
 -- Toggle file explorer
 local mini_files = require('mini.files')
 mini_files.setup({})
+
+vim.keymap.set('n', '<leader>e', function()
+  if mini_files.close() then
+    return
+  end
+
+  mini_files.open()
+end, { desc = 'File explorer'} )
 
 local map_split = function(buf_id, lhs, direction)
   local rhs = function()
@@ -76,14 +85,7 @@ vim.api.nvim_create_autocmd('User', {
   end,
 })
 
-vim.keymap.set('n', '<leader>e', function()
-  if mini_files.close() then
-    return
-  end
-
-  mini_files.open()
-end, { desc = 'File explorer'} )
-
+-- Status line
 require('mini.statusline').setup({})
 
 -- Treesitter setup
