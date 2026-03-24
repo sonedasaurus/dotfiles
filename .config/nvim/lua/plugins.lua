@@ -23,11 +23,10 @@ vim.api.nvim_create_autocmd('PackChanged', {
 
 vim.pack.add({
   { src = 'https://github.com/folke/tokyonight.nvim' },
-	{ src = 'https://github.com/neovim/nvim-lspconfig' },
-	{ src = 'https://github.com/VonHeikemen/ts-enable.nvim' },
-	{ src = 'https://github.com/nvim-mini/mini.nvim', version = 'main' },
-	{  
-		src = 'https://github.com/nvim-treesitter/nvim-treesitter',
+  { src = 'https://github.com/neovim/nvim-lspconfig' },
+  { src = 'https://github.com/VonHeikemen/ts-enable.nvim' },
+  {
+    src = 'https://github.com/nvim-treesitter/nvim-treesitter',
     version = 'main',
     data = {
       on_update = function()
@@ -35,16 +34,23 @@ vim.pack.add({
       end,
     },
   },
+  { src = 'https://github.com/nvim-mini/mini.nvim', version = 'main' },
 })
 
 -- ========================================================================== --
 -- ==                         PLUGIN CONFIGURATION                         == --
 -- ========================================================================== --
 
--- Color scheme
+-- ----------------------------------- --
+-- Colorscheme
+-- ----------------------------------- --
+
 vim.cmd.colorscheme('tokyonight-night')
 
--- Toggle file explorer
+-- ----------------------------------- --
+-- File Explorer
+-- ----------------------------------- --
+
 local mini_files = require('mini.files')
 mini_files.setup({})
 
@@ -54,8 +60,9 @@ vim.keymap.set('n', '<leader>e', function()
   end
 
   mini_files.open()
-end, { desc = 'File explorer'} )
+end, { desc = 'File explorer' })
 
+-- Split windows from the file explorer
 local map_split = function(buf_id, lhs, direction)
   local rhs = function()
     local cur_target = MiniFiles.get_explorer_state().target_window
@@ -85,10 +92,16 @@ vim.api.nvim_create_autocmd('User', {
   end,
 })
 
--- Status line
+-- ----------------------------------- --
+-- Status Line
+-- ----------------------------------- --
+
 require('mini.statusline').setup({})
 
--- Treesitter setup
+-- ----------------------------------- --
+-- Syntax Highlighting
+-- ----------------------------------- --
+
 local ts_parsers = {
   "bash",
   "dockerfile",
