@@ -154,28 +154,14 @@ vim.g.ts_enable = {
 -- LSP
 -- ----------------------------------- --
 
-local mini_completion = require('mini.completion')
-mini_completion.setup({})
-
-local lsp_capabilities = vim.tbl_deep_extend(
-  'force',
-  vim.lsp.protocol.make_client_capabilities(),
-  mini_completion.get_lsp_capabilities()
-)
-
-for _, server in ipairs({
+vim.lsp.enable({
   'sourcekit',
   'kotlin_language_server',
   'gopls',
   'marksman',
   'pyright',
-  'bashls',
-}) do
-  vim.lsp.config(server, {
-    capabilities = lsp_capabilities,
-  })
-  vim.lsp.enable(server)
-end
+  'lua_ls',
+})
 
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
