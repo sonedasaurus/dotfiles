@@ -35,6 +35,10 @@ vim.pack.add({
     },
   },
   { src = 'https://github.com/neovim/nvim-lspconfig' },
+  { src = 'https://github.com/nvim-lua/plenary.nvim' },
+  { src = 'https://github.com/MunifTanjim/nui.nvim' },
+  { src = 'https://github.com/nvim-neo-tree/neo-tree.nvim' },
+  { src = 'https://github.com/nvim-tree/nvim-web-devicons' },
 })
 
 -- ========================================================================== --
@@ -48,76 +52,25 @@ vim.pack.add({
 vim.cmd.colorscheme('tokyonight-night')
 
 -- ----------------------------------- --
--- File Explorer
+-- File Tree
 -- ----------------------------------- --
 
-local mini_files = require('mini.files')
-mini_files.setup({
-  mappings = {
-    go_in_plus = '',
-  },
-})
+require('neo-tree')
 
-vim.keymap.set('n', '<leader>e', function()
-  if mini_files.close() then
-    return
-  end
-
-  mini_files.open()
-end, { desc = 'File explorer' })
-
--- Split windows from the file explorer
-local map_split = function(buf_id, lhs, direction)
-  local rhs = function()
-    local cur_target = MiniFiles.get_explorer_state().target_window
-    local new_target
-
-    vim.api.nvim_win_call(cur_target, function()
-      vim.cmd(direction .. ' split')
-      new_target = vim.api.nvim_get_current_win()
-    end)
-
-    MiniFiles.set_target_window(new_target)
-    MiniFiles.go_in()
-  end
-
-  vim.keymap.set('n', lhs, rhs, {
-    buffer = buf_id,
-    desc = 'Split ' .. direction,
-  })
-end
-
--- Only open files with Enter in the file explorer
-local map_go_in = function(buf_id, lhs, fs_type, desc)
-  vim.keymap.set('n', lhs, function()
-    local fs_entry = mini_files.get_fs_entry()
-    if fs_entry == nil or fs_entry.fs_type ~= fs_type then
-      return
-    end
-
-    mini_files.go_in()
-  end, {
-    buffer = buf_id,
-    desc = desc,
-  })
-end
-
-vim.api.nvim_create_autocmd('User', {
-  pattern = 'MiniFilesBufferCreate',
-  callback = function(args)
-    local buf_id = args.data.buf_id
-    map_go_in(buf_id, 'l', 'directory', 'Open directory')
-    map_go_in(buf_id, '<CR>', 'file', 'Open file')
-    map_split(buf_id, 'gs', 'belowright horizontal')
-    map_split(buf_id, 'gv', 'belowright vertical')
-  end,
-})
+vim.keymap.set('n', '<C-n>', '<cmd>Neotree filesystem toggle left<CR>', { desc = 'Toggle file tree' })
 
 -- ----------------------------------- --
 -- Status Line
 -- ----------------------------------- --
 
-require('mini.statusline').setup({})
+local statusline = require('mini.statusline')
+statusline.setup({
+  use_icons = vim.g.have_nerd_font,
+})
+
+statusline.section_location = function()
+  return '%2l:%-2v'
+end
 
 -- ----------------------------------- --
 -- Syntax Highlighting
@@ -171,12 +124,5 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
     vim.keymap.set('n', 'grd', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
     vim.keymap.set({'n', 'x'}, 'gq', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-
-    local id = vim.tbl_get(event, 'data', 'client_id')
-    local client = id and vim.lsp.get_client_by_id(id)
-
-    if client and client:supports_method('textDocument/completion') then
-      vim.bo[event.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
-    end
   end,
 })
