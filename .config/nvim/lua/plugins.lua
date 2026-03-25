@@ -21,6 +21,12 @@ vim.api.nvim_create_autocmd('PackChanged', {
   end,
 })
 
+local markdown_preview_build = function()
+  vim.fn['mkdp#util#install_sync'](1)
+end
+
+vim.g.mkdp_filetypes = { 'markdown' }
+
 vim.pack.add({
   { src = 'https://github.com/folke/tokyonight.nvim' },
   { src = 'https://github.com/nvim-mini/mini.nvim', version = 'main' },
@@ -39,6 +45,19 @@ vim.pack.add({
   { src = 'https://github.com/MunifTanjim/nui.nvim' },
   { src = 'https://github.com/nvim-neo-tree/neo-tree.nvim' },
   { src = 'https://github.com/nvim-tree/nvim-web-devicons' },
+  {
+    src = 'https://github.com/iamcco/markdown-preview.nvim',
+    data = {
+      on_install = markdown_preview_build,
+      on_update = markdown_preview_build,
+    },
+  },
+})
+
+vim.cmd.runtime('plugin/mkdp.vim')
+vim.g.mkdp_preview_options = vim.tbl_extend('force', vim.g.mkdp_preview_options or {}, {
+  disable_sync_scroll = 1,
+  disable_filename = 1,
 })
 
 -- ========================================================================== --
@@ -58,6 +77,19 @@ vim.cmd.colorscheme('tokyonight-night')
 require('neo-tree')
 
 vim.keymap.set('n', '<C-n>', '<cmd>Neotree filesystem toggle left<CR>', { desc = 'Toggle file tree' })
+
+-- ----------------------------------- --
+-- Markdown Preview
+-- ----------------------------------- --
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'markdown',
+  callback = function(event)
+    local opts = { buffer = event.buf }
+    vim.keymap.set('n', '<leader>mp', '<cmd>MarkdownPreviewToggle<CR>', vim.tbl_extend('force', opts, { desc = 'Markdown Preview' }))
+    vim.keymap.set('n', '<leader>ms', '<cmd>MarkdownPreviewStop<CR>', vim.tbl_extend('force', opts, { desc = 'Stop Preview' }))
+  end,
+})
 
 -- ----------------------------------- --
 -- Status Line

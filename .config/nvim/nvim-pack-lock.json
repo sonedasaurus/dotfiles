@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "markdown-preview.nvim": {
+      "rev": "a923f5fc5ba36a3b17e289dc35dc17f66d0548ee",
+      "src": "https://github.com/iamcco/markdown-preview.nvim"
+    },
     "mini.nvim": {
       "rev": "439cdcd6992bc9012efd7d8ed7a7b7a0f1fac32a",
       "src": "https://github.com/nvim-mini/mini.nvim",
