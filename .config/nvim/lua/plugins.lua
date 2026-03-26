@@ -66,7 +66,7 @@ vim.g.mkdp_preview_options = vim.tbl_extend('force', vim.g.mkdp_preview_options 
 -- ========================================================================== --
 
 -- ----------------------------------- --
--- Colorscheme
+--             Colorscheme             --
 -- ----------------------------------- --
 
 -- Remove the tinted background from Markdown headings while preserving the heading colors.
@@ -85,7 +85,7 @@ require('tokyonight').setup({
 vim.cmd.colorscheme('tokyonight-night')
 
 -- ----------------------------------- --
--- File Tree
+--              File Tree              --
 -- ----------------------------------- --
 
 require('neo-tree')
@@ -93,7 +93,7 @@ require('neo-tree')
 vim.keymap.set('n', '<C-n>', '<cmd>Neotree filesystem toggle left<CR>', { desc = 'Toggle file tree' })
 
 -- ----------------------------------- --
--- Markdown Preview
+--           Markdown Preview          --
 -- ----------------------------------- --
 
 vim.api.nvim_create_autocmd('FileType', {
@@ -106,7 +106,7 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 -- ----------------------------------- --
--- Status Line
+--             Status Line             --
 -- ----------------------------------- --
 
 local statusline = require('mini.statusline')
@@ -119,7 +119,7 @@ statusline.section_location = function()
 end
 
 -- ----------------------------------- --
--- Syntax Highlighting
+--         Syntax Highlighting         --
 -- ----------------------------------- --
 
 local ts_parsers = {
@@ -150,7 +150,7 @@ vim.g.ts_enable = {
 }
 
 -- ----------------------------------- --
--- LSP
+--                 LSP                 --
 -- ----------------------------------- --
 
 vim.lsp.enable({
