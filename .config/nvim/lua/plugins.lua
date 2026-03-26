@@ -56,6 +56,7 @@ vim.pack.add({
 })
 
 vim.cmd.runtime('plugin/mkdp.vim')
+vim.g.mkdp_markdown_css = vim.fn.stdpath('config') .. '/styles/markdown-preview.css'
 vim.g.mkdp_preview_options = vim.tbl_extend('force', vim.g.mkdp_preview_options or {}, {
   disable_sync_scroll = 1,
   disable_filename = 1,
