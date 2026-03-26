@@ -1,0 +1,54 @@
+{
+  "plugins": {
+    "copilot.vim": {
+      "rev": "a12fd5672110c8aa7e3c8419e28c96943ca179be",
+      "src": "https://github.com/github/copilot.vim"
+    },
+    "markdown-preview.nvim": {
+      "rev": "a923f5fc5ba36a3b17e289dc35dc17f66d0548ee",
+      "src": "https://github.com/iamcco/markdown-preview.nvim"
+    },
+    "mini.nvim": {
+      "rev": "439cdcd6992bc9012efd7d8ed7a7b7a0f1fac32a",
+      "src": "https://github.com/nvim-mini/mini.nvim",
+      "version": "'main'"
+    },
+    "neo-tree.nvim": {
+      "rev": "ba6871d15528e36657d19a3112cc1697c59da19a",
+      "src": "https://github.com/nvim-neo-tree/neo-tree.nvim"
+    },
+    "nui.nvim": {
+      "rev": "de740991c12411b663994b2860f1a4fd0937c130",
+      "src": "https://github.com/MunifTanjim/nui.nvim"
+    },
+    "nvim-lspconfig": {
+      "rev": "841c6d4139aedb8a3f2baf30cef5327371385b93",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-tree.lua": {
+      "rev": "3d385d3346e4883d60dc37cf642bd47bed78a46e",
+      "src": "https://github.com/nvim-tree/nvim-tree.lua"
+    },
+    "nvim-treesitter": {
+      "rev": "6620ae1c44dfa8623b22d0cbf873a9e8d073b849",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
+      "version": "'main'"
+    },
+    "nvim-web-devicons": {
+      "rev": "d7462543c9e366c0d196c7f67a945eaaf5d99414",
+      "src": "https://github.com/nvim-tree/nvim-web-devicons"
+    },
+    "plenary.nvim": {
+      "rev": "b9fd5226c2f76c951fc8ed5923d85e4de065e509",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "tokyonight.nvim": {
+      "rev": "73822773d5badaeba999206179a9105f9867ac59",
+      "src": "https://github.com/folke/tokyonight.nvim"
+    },
+    "ts-enable.nvim": {
+      "rev": "b6cbde53a490075c59f9b78c54530abf034a47d4",
+      "src": "https://github.com/VonHeikemen/ts-enable.nvim"
+    }
+  }
+}
