@@ -41,7 +41,7 @@ vim.o.cursorline = true
 
 -- Show tab characters so indentation is easier to spot.
 vim.o.list = true
-vim.opt.listchars = { tab = '» ' }
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Basic clipboard interaction
 vim.keymap.set({'n', 'x'}, 'gy', '"+y', {desc = 'Copy to clipboard'})
