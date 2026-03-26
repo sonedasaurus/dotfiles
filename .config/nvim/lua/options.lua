@@ -11,6 +11,9 @@ vim.g.have_nerd_font = false
 -- Make line numbers default
 vim.o.number = true
 
+-- Enable mouse mode, can be useful for resizing splits for example!
+vim.o.mouse = 'a'
+
 -- Enable break indent
 vim.o.breakindent = true
 
@@ -38,6 +41,9 @@ vim.o.timeoutlen = 500
 
 -- Show which line your cursor is on
 vim.o.cursorline = true
+
+-- Minimal number of screen lines to keep above and below the cursor.
+vim.o.scrolloff = 5
 
 -- Show tab characters so indentation is easier to spot.
 vim.o.list = true
