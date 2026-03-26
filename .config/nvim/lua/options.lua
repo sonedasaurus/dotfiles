@@ -30,6 +30,12 @@ vim.o.softtabstop = 2
 -- Keep signcolumn on by default
 vim.o.signcolumn = 'yes'
 
+-- Decrease update time
+vim.o.updatetime = 300
+
+-- Decrease mapped sequence wait time
+vim.o.timeoutlen = 500
+
 -- Show which line your cursor is on
 vim.o.cursorline = true
 
