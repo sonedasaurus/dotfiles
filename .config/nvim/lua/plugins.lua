@@ -68,6 +68,19 @@ vim.g.mkdp_preview_options = vim.tbl_extend('force', vim.g.mkdp_preview_options 
 -- Colorscheme
 -- ----------------------------------- --
 
+-- Remove the tinted background from Markdown headings while preserving the heading colors.
+require('tokyonight').setup({
+  on_highlights = function(highlights, colors)
+    for level, color in ipairs(colors.rainbow) do
+      highlights['@markup.heading.' .. level .. '.markdown'] = {
+        fg = color,
+        bg = colors.none,
+        bold = true,
+      }
+    end
+  end,
+})
+
 vim.cmd.colorscheme('tokyonight-night')
 
 -- ----------------------------------- --
