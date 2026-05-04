@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'beep'",
+            "statusMessage": "Approval request notification"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
