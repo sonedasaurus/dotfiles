@@ -39,5 +39,13 @@ link_item "$repo_dir/.tmux.conf" "$HOME/.tmux.conf"
 
 for source in "$repo_dir"/.codex/*; do
   [ -e "$source" ] || [ -L "$source" ] || continue
+  [ "${source##*/}" != "config.toml.example" ] || continue
   link_item "$source" "$HOME/.codex/${source##*/}"
 done
+
+codex_config="$HOME/.codex/config.toml"
+if [ ! -e "$codex_config" ] && [ ! -L "$codex_config" ]; then
+  mkdir -p "$HOME/.codex"
+  cp "$repo_dir/.codex/config.toml.example" "$codex_config"
+  printf 'Created %s from example.\n' "$codex_config"
+fi

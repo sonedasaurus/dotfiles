@@ -5,8 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"Codex finished\" with title \"Codex\"'",
-            "statusMessage": "Sending completion notification"
+            "command": "osascript -e 'beep'"
           }
         ]
       }
