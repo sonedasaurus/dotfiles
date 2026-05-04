@@ -1,73 +1,175 @@
--- [[ Configure and install plugins ]]
---
---  To check the current status of your plugins, run
---    :Lazy
---
---  You can press `?` in this menu for help. Use `:q` to close the window
---
---  To update plugins you can run
---    :Lazy update
---
--- NOTE: Here is where you install your plugins.
-require('lazy').setup({
-  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+-- ========================================================================== --
+-- ==                               PLUGINS                                == --
+-- ========================================================================== --
 
-  -- NOTE: Plugins can also be added by using a table,
-  -- with the first argument being the link and the following
-  -- keys can be used to configure plugin behavior/loading/etc.
-  --
-  -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded.
-  --
+vim.api.nvim_create_autocmd('PackChanged', {
+  desc = 'execute plugin callbacks',
+  callback = function(event)
+    local data = event.data or {}
+    local kind = data.kind or ''
+    local callback = vim.tbl_get(data, 'spec', 'data', 'on_' .. kind)
 
-  -- modular approach: using `require 'path.name'` will
-  -- include a plugin definition from file lua/path/name.lua
+    if type(callback) ~= 'function' then
+      return
+    end
 
-  require 'plugins/gitsigns',
-  require 'plugins/which-key',
-  require 'plugins/telescope',
-  require 'plugins/lspconfig',
-  -- require 'plugins/conform',
-  require 'plugins/blink-cmp',
-  require 'plugins/tokyonight',
-  require 'plugins/todo-comments',
-  require 'plugins/mini',
-  require 'plugins/treesitter',
-  -- require 'plugins/debug',
-  -- require 'plugins/indent_line',
-  -- require 'plugins/lint',
-  -- require 'plugins/autopairs',
-  require 'plugins/neo-tree',
-  require 'plugins/markdown-preview',
+    -- possible callbacks: on_install, on_update, on_delete
+    local ok, err = pcall(callback, data)
+    if not ok then
+      vim.notify(err, vim.log.levels.ERROR)
+    end
+  end,
+})
 
-  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-  --    This is the easiest way to modularize your config.
-  --
-  --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
-  --
-  -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
-  -- Or use telescope!
-  -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
-  -- you can continue same window with `<space>sr` which resumes last telescope search
-}, {
-  ui = {
-    -- If you are using a Nerd Font: set icons to an empty table which will use the
-    -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
-    icons = vim.g.have_nerd_font and {} or {
-      cmd = '⌘',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙',
-      keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
-      require = '🌙',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
+local markdown_preview_build = function()
+  vim.fn['mkdp#util#install_sync'](1)
+end
+
+vim.g.mkdp_filetypes = { 'markdown' }
+
+vim.pack.add({
+  { src = 'https://github.com/folke/tokyonight.nvim' },
+  { src = 'https://github.com/nvim-mini/mini.nvim', version = 'main' },
+  { src = 'https://github.com/VonHeikemen/ts-enable.nvim' },
+  {
+    src = 'https://github.com/nvim-treesitter/nvim-treesitter',
+    version = 'main',
+    data = {
+      on_update = function()
+        vim.cmd('TSUpdate')
+      end,
     },
   },
+  { src = 'https://github.com/neovim/nvim-lspconfig' },
+  { src = 'https://github.com/nvim-lua/plenary.nvim' },
+  { src = 'https://github.com/MunifTanjim/nui.nvim' },
+  { src = 'https://github.com/nvim-neo-tree/neo-tree.nvim' },
+  { src = 'https://github.com/nvim-tree/nvim-web-devicons' },
+  {
+    src = 'https://github.com/iamcco/markdown-preview.nvim',
+    data = {
+      on_install = markdown_preview_build,
+      on_update = markdown_preview_build,
+    },
+  },
+  { src = 'https://github.com/github/copilot.vim' },
+})
+
+vim.cmd.runtime('plugin/mkdp.vim')
+vim.g.mkdp_markdown_css = vim.fn.stdpath('config') .. '/styles/markdown-preview.css'
+vim.g.mkdp_preview_options = vim.tbl_extend('force', vim.g.mkdp_preview_options or {}, {
+  disable_sync_scroll = 1,
+  disable_filename = 1,
+})
+
+-- ========================================================================== --
+-- ==                         PLUGIN CONFIGURATION                         == --
+-- ========================================================================== --
+
+-- ----------------------------------- --
+--             Colorscheme             --
+-- ----------------------------------- --
+
+-- Remove the tinted background from Markdown headings while preserving the heading colors.
+require('tokyonight').setup({
+  on_highlights = function(highlights, colors)
+    for level, color in ipairs(colors.rainbow) do
+      highlights['@markup.heading.' .. level .. '.markdown'] = {
+        fg = color,
+        bg = colors.none,
+        bold = true,
+      }
+    end
+  end,
+})
+
+vim.cmd.colorscheme('tokyonight-night')
+
+-- ----------------------------------- --
+--              File Tree              --
+-- ----------------------------------- --
+
+require('neo-tree')
+
+vim.keymap.set('n', '<C-n>', '<cmd>Neotree filesystem toggle left<CR>', { desc = 'Toggle file tree' })
+
+-- ----------------------------------- --
+--           Markdown Preview          --
+-- ----------------------------------- --
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'markdown',
+  callback = function(event)
+    local opts = { buffer = event.buf }
+    vim.keymap.set('n', '<leader>mp', '<cmd>MarkdownPreviewToggle<CR>', vim.tbl_extend('force', opts, { desc = 'Markdown Preview' }))
+    vim.keymap.set('n', '<leader>ms', '<cmd>MarkdownPreviewStop<CR>', vim.tbl_extend('force', opts, { desc = 'Stop Preview' }))
+  end,
+})
+
+-- ----------------------------------- --
+--             Status Line             --
+-- ----------------------------------- --
+
+local statusline = require('mini.statusline')
+statusline.setup({
+  use_icons = vim.g.have_nerd_font,
+})
+
+statusline.section_location = function()
+  return '%2l:%-2v'
+end
+
+-- ----------------------------------- --
+--         Syntax Highlighting         --
+-- ----------------------------------- --
+
+local ts_parsers = {
+  "bash",
+  "dockerfile",
+  "gitignore",
+  "go",
+  "html",
+  "javascript",
+  "json",
+  "kotlin",
+  "lua",
+  "markdown",
+  "markdown_inline",
+  "python",
+  "sql",
+  "swift",
+  "typescript",
+  "vim",
+  "vimdoc",
+  "yaml",
+}
+
+vim.g.ts_enable = {
+  parsers = ts_parsers,
+  auto_install = true,
+  highlights = true,
+}
+
+-- ----------------------------------- --
+--                 LSP                 --
+-- ----------------------------------- --
+
+vim.lsp.enable({
+  'sourcekit',
+  'kotlin_language_server',
+  'gopls',
+  'marksman',
+  'pyright',
+  'lua_ls',
+})
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  desc = 'LSP actions',
+  callback = function(event)
+    local opts = {buffer = event.buf}
+    vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
+    vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
+    vim.keymap.set('n', 'grd', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
+    vim.keymap.set({'n', 'x'}, 'gq', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
+  end,
 })
