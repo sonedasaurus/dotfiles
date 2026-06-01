@@ -71,7 +71,6 @@ filetype plugin indent on
 NeoBundleCheck
 
 """"""""" Color Scheme
-colorscheme summerfruit256
 syntax on
 
 """"""""" NERDCommenter
@@ -116,6 +115,14 @@ inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplete#close_popup()
 inoremap <expr><C-e>  neocomplete#cancel_popup()
+
+"copilot keybindings
+"ALT-]
+inoremap ‘ <Plug>(copilot-next)
+"ALT-[
+inoremap “ <Plug>(copilot-previous)
+"ALT-\
+inoremap « <Plug>(copilot-suggest)
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -169,3 +176,8 @@ nnoremap [previm] <Nop>
 nmap <Space>p [previm]
 nnoremap <silent> [previm]o :<C-u>PrevimOpen<CR>
 nnoremap <silent> [previm]r :call previm#refresh()<CR>
+
+" Copilot
+imap <M-]> <Plug>(copilot-next)
+imap <M-[> <Plug>(copilot-previous)
+imap <M-\> <Plug>(copilot-suggest)
