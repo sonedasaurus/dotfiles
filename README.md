@@ -4,8 +4,10 @@
 
 ```sh
 brew install chezmoi
-chezmoi init sonedasaurs
+chezmoi init sonedasaurus
 chezmoi apply
+brew bundle --global
+mise install
 ```
 
 ## Update
