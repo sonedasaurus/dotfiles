@@ -13,13 +13,13 @@ mise install
 ## Update
 
 ```sh
-$ chezmoi update
+chezmoi update
 ```
 
 Or
 
 ```sh
-$ cd ~/.local/share/chezmoi
-$ git pull
-$ chezmoi apply
+cd ~/.local/share/chezmoi
+git pull
+chezmoi apply
 ```
