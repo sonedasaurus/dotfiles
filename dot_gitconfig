@@ -1,10 +1,12 @@
-[include]
-  # path = ~/.gitconfig_local
+[user]
+  name = sonedasaurus
+  email = 10826536+sonedasaurus@users.noreply.github.com
+
 [core]
-  editor = vim
-  pager = less
+  editor = nvim
   autocrlf = input
-  # excludesfile = ~/.gitignore_global
+  excludesfile = ~/.gitignore_global
+
 [color]
   ui = auto
   diff = auto
@@ -12,9 +14,15 @@
   status = auto
   branch = auto
   interactive = auto
+
+[diff]
+  algorithm = histogram
+
+[pull]
+  ff = only
+
 [alias]
   f = fetch -p
-  pull = fetch -p
   logp = log -p
   logs = log --stat
   logg = log --graph --date=format:'%y-%m-%d(%a) %T' --pretty=format:'%h %C(green)%cd %C(blue)%ad %C(green)%cn %C(blue)%an %C(green)%ce %C(blue)%ae %C(reset)%s'
@@ -28,8 +36,3 @@
   diffc = diff --cached
   resets = reset --soft
   reseth = reset --hard
-[user]
-  # email =
-  # name =
-[diff]
-  algorithm = histogram
