@@ -1,0 +1,38 @@
+onboarding = false
+
+[terminal]
+new_cwd = "follow"
+
+[keys]
+prefix = "ctrl+s"
+
+next_tab = ["prefix+n", "prefix+ctrl+n"]
+previous_tab = ["prefix+p", "prefix+ctrl+p"]
+
+split_vertical = "prefix+1"
+split_horizontal = "prefix+2"
+switch_tab = ""
+
+copy_mode = "prefix+v"
+
+# herdrの不具合なのか prefix+w で rename_workspace が効かないので
+# 暫定的にprefix+u に変更
+rename_workspace = "prefix+u"
+
+workspace_picker = "prefix+m"
+navigate_workspace_up   = "k"
+navigate_workspace_down = "j"
+
+[ui]
+mouse_capture = true
+copy_on_select = true
+prompt_new_tab_name = false
+pane_scrollbars = false
+agent_panel_sort = "spaces"
+
+[ui.toast]
+delivery = "system"
+
+[theme]
+name = "tokyo-night"
+auto_switch = false
