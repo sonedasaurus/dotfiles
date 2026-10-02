@@ -52,7 +52,7 @@ vim.pack.add({
       on_update = markdown_preview_build,
     },
   },
-  { src = 'https://github.com/github/copilot.vim' },
+  -- { src = 'https://github.com/github/copilot.vim' },
 })
 
 vim.cmd.runtime('plugin/mkdp.vim')
