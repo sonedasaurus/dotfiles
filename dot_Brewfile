@@ -5,3 +5,5 @@ brew "docker-compose"
 brew "herdr"
 brew "mise"
 brew "tree"
+
+cask "hammerspoon"
