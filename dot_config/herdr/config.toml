@@ -25,7 +25,7 @@ navigate_workspace_down = "j"
 
 [ui]
 mouse_capture = true
-copy_on_select = true
+copy_on_select = false
 prompt_new_tab_name = false
 pane_scrollbars = false
 agent_panel_sort = "spaces"

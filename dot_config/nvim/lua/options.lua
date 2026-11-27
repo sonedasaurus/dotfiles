@@ -52,3 +52,7 @@ vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 -- Basic clipboard interaction
 vim.keymap.set({'n', 'x'}, 'gy', '"+y', {desc = 'Copy to clipboard'})
 vim.keymap.set({'n', 'x'}, 'gp', '"+p', {desc = 'Paste clipboard content'})
+
+-- Exit insert mode with Ctrl+Backspace or Ctrl+L
+vim.keymap.set('i', '<C-BS>', '<Esc>', {desc = 'Exit insert mode'})
+vim.keymap.set('i', '<C-l>', '<Esc>', {desc = 'Exit insert mode'})
